@@ -1,5 +1,6 @@
 package com.pujariz.RestUserProject.Service;
 
+import com.pujariz.RestUserProject.DTO.UserDTO;
 import com.pujariz.RestUserProject.Entity.Address;
 import com.pujariz.RestUserProject.Entity.Company;
 import com.pujariz.RestUserProject.Entity.Geo;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserServiceble {
@@ -22,9 +24,18 @@ public class UserService implements UserServiceble {
     @Autowired
     UserRepository userRepository;
 
+//    @Override
+//    public List<User> getAllUser() {
+//        return userRepository.findAll();
+//    }
+
+    // Fetch all users with their posts
     @Override
-    public List<User> getAllUser() {
-        return userRepository.findAll();
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(UserDTO::new) // Convert each User to UserDTO
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -33,9 +44,13 @@ public class UserService implements UserServiceble {
     }
 
     @Override
-    public ResponseEntity<User> getUerById(long id) {
-        return userRepository.findById(id).map(user -> ResponseEntity.ok().body(user)).
-                orElse(ResponseEntity.notFound().build());
+    public UserDTO getUserById(long userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            return new UserDTO(userOptional.get());
+        } else {
+            throw new RuntimeException("User  not found with ID: " + userId);
+        }
     }
 
     @Override

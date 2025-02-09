@@ -1,5 +1,6 @@
 package com.pujariz.RestUserProject.Controller;
 
+import com.pujariz.RestUserProject.DTO.UserDTO;
 import com.pujariz.RestUserProject.Entity.User;
 import com.pujariz.RestUserProject.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,18 @@ import java.util.Objects;
 public class UserController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
+//    @GetMapping
+//    public List<User> getAllUsers(){
+//        return userService.getAllUser();
+//    }
+
+    // Get all users with their posts
     @GetMapping
-    public List<User> getAllUsers(){
-        return userService.getAllUser();
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        List<UserDTO> users = userService.getAllUsers();
+        return ResponseEntity.ok(users);
     }
 
     @PostMapping
@@ -27,8 +35,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable long id){
-        return userService.getUerById(id);
+    public ResponseEntity<UserDTO> getUserById(@PathVariable long id) {
+        UserDTO userDTO = userService.getUserById(id);
+        return ResponseEntity.ok(userDTO);
     }
 
     @PutMapping("/{id}")

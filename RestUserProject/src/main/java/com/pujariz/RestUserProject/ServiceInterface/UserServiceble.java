@@ -1,5 +1,6 @@
 package com.pujariz.RestUserProject.ServiceInterface;
 
+import com.pujariz.RestUserProject.DTO.UserDTO;
 import com.pujariz.RestUserProject.Entity.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,14 +10,14 @@ import java.util.List;
 
 public interface UserServiceble {
 
-    //Get
-    public List<User> getAllUser();
+    //Get all users
+    public List<UserDTO> getAllUsers();
 
     //Post
     public User createUser(@RequestBody User user);
 
     //Get{id}
-    public ResponseEntity<User> getUerById(@PathVariable long id);
+    public UserDTO getUserById(@PathVariable long userId);
 
 
     //Put

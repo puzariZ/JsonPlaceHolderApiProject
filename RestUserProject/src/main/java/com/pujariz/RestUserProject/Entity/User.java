@@ -2,6 +2,8 @@ package com.pujariz.RestUserProject.Entity;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name="users")
 public class User {
@@ -23,8 +25,19 @@ public class User {
     @JoinColumn(name="company_id", referencedColumnName = "id")
     private Company company;
 
-    //Getters and Setters
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Post> posts; // List of posts associated with the user
+
+//Getters and Setters
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
 
     public long getId() {
         return id;
