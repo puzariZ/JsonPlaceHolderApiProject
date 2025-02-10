@@ -1,16 +1,13 @@
 package com.pujariz.RestUserProject.Service;
 
 import com.pujariz.RestUserProject.DTO.PostResponseDTO;
-import com.pujariz.RestUserProject.DTO.UserDTO;
 import com.pujariz.RestUserProject.Entity.Post;
 import com.pujariz.RestUserProject.Entity.User;
 import com.pujariz.RestUserProject.Repository.PostRepository;
 import com.pujariz.RestUserProject.Repository.UserRepository;
 import com.pujariz.RestUserProject.ServiceInterface.PostServiceble;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -69,8 +66,26 @@ public Post createNewPost(long userId, Post post) {
     }
 
     @Override
-    public ResponseEntity<Post> getPostById(long postId) {
-        return null;
+    public PostResponseDTO getPostByPostId(long userId, long postId) {
+
+        // Fetch a post by user ID and post ID
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (!userOptional.isPresent()){
+            throw new RuntimeException("User doesn't exist with this userID "+userId);
+        }
+
+        // Now check if the post exists
+        Optional<Post> postOptional = postRepository.findById(postId);
+        if(postOptional.isPresent()){
+            Post post = postOptional.get();
+            if(post.getUser() != null && post.getUser().getId() == userId){
+                return new PostResponseDTO(post);
+            } else {
+                throw new RuntimeException("Post Doesn't exist with this userID "+ userId);
+            }
+        } else {
+            throw new RuntimeException("Post doesn't exist with this postID "+ postId);
+        }
     }
 
     @Override

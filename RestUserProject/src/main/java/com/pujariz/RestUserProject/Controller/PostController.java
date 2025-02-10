@@ -41,12 +41,13 @@ public class PostController {
         return ResponseEntity.ok(posts); // Wrap the list in a ResponseEntity and return it
     }
 
-    @GetMapping("/post/{postId}")
-    public ResponseEntity<Post> getPostById(@PathVariable long postId){
-        return postService.getPostById(postId);
+    @GetMapping("/user/{userId}/post/{postId}")
+    public ResponseEntity<PostResponseDTO> getPostByPostId(@PathVariable long userId, @PathVariable long postId){
+        PostResponseDTO postResponseDTO = postService.getPostByPostId(userId, postId);
+        return ResponseEntity.ok(postResponseDTO);
+//        return postService.getPostByPostId(userId, postId);
     }
 
-//    @PutMapping("/{user_id}/{id}")
     @PatchMapping("/user/{userId}/post/{postId}")
     public ResponseEntity<PostResponseDTO> updatePostById(@PathVariable long userId,@PathVariable long postId, @RequestBody Post postDetails){
         Post updatedPost = postService.updatePostById(userId, postId, postDetails);

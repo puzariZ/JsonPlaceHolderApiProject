@@ -17,7 +17,7 @@ public interface PostServiceble {
 
     public List<PostResponseDTO> getPostByUserId(@PathVariable long userId);
 
-    public ResponseEntity<Post> getPostById(@PathVariable long postId);
+    public PostResponseDTO getPostByPostId(@PathVariable long UserId, @PathVariable long postId);
 
     public Post updatePostById(@PathVariable long userId,@PathVariable long postId, @RequestBody Post postDetails);
 
